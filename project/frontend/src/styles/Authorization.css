@@ -1,0 +1,138 @@
+/* Ruthorization.css */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Высота экрана */
+    margin: 0; /* Убираем отступы по умолчанию */
+    background-color: #f8f9fa; /* Цвет фона */
+}
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px; /* Отступы внутри контейнера */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
+    max-width: 400px; /* Ограничиваем ширину контейнера */
+    width: 100%; /* Заполняем ширину до максимума */
+    margin: 20px; /* Отступы по бокам */
+}
+
+h1 {
+    margin-bottom: 30px; /* Увеличиваем отступ снизу */
+    font-size: 28px; /* Увеличенный размер заголовка */
+    text-align: center; /* Центрирование текста */
+}
+
+.auth-switch {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px; /* Увеличиваем отступ снизу */
+}
+
+.auth-label {
+    margin: 0 15px; /* Увеличиваем отступы между метками */
+    cursor: pointer;
+    font-size: 20px; /* Увеличенный размер шрифта */
+    position: relative; /* Для псевдоэлемента */
+    padding: 15px 20px; /* Увеличиваем область нажатия */
+    border: 2px solid transparent; /* Для изменения цвета при выборе */
+    border-radius: 5px; /* Скругление углов */
+    transition: border-color 0.3s ease;
+}
+
+.auth-label input {
+    display: none; /* Скрываем стандартные радиокнопки */
+}
+
+.auth-label.active {
+    font-weight: bold;
+    color: #007bff; /* Цвет для активного состояния */
+    border-color: #007bff; /* Цвет рамки для активного состояния */
+}
+
+.auth-inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Заполняем ширину */
+    width: 100%;
+}
+
+.auth-input {
+    margin: 15px 0; /* Увеличиваем отступы */
+    padding: 15px; /* Увеличиваем внутренний отступ */
+    font-size: 18px; /* Увеличенный размер шрифта */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.auth-button {
+    padding: 15px; /* Увеличиваем внутренний отступ */
+    font-size: 18px; /* Увеличенный размер шрифта */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%; /* Заполняем ширину */
+}
+
+.auth-button:hover {
+    background-color: #0056b3;
+}
+
+.auth-message {
+    margin-top: 10px;
+    color: red;
+    text-align: center; /* Центрирование текста */
+}
+
+.auth-registration-link {
+    margin-top: 20px;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    text-align: center; /* Центрирование текста */
+}
+
+.logout-button {
+    margin-top: 10px;
+    padding: 15px; /* Увеличиваем внутренний отступ */
+    font-size: 18px; /* Увеличенный размер шрифта */
+    background-color: #dc3545; /* Красный цвет для кнопки выхода */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%; /* Заполняем ширину */
+}
+
+.logout-button:hover {
+    background-color: #c82333; /* Темнее на ховер */
+}
+
+/* Адаптивные стили */
+@media (max-width: 500px) {
+    .auth-container {
+        padding: 15px; /* Уменьшаем отступы на мобильных устройствах */
+    }
+
+    h1 {
+        font-size: 24px; /* Уменьшаем размер заголовка на мобильных */
+    }
+
+    .auth-label {
+        font-size: 18px; /* Уменьшаем размер шрифта для радиокнопок */
+    }
+
+    .auth-input,
+    .auth-button,
+    .logout-button {
+        font-size: 16px; /* Уменьшаем размер шрифта для кнопок и полей ввода */
+    }
+}

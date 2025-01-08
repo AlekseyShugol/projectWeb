@@ -1,0 +1,79 @@
+/* MainMenu.css */
+.menu-button {
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333; /* Цвет текста по умолчанию */
+    transition: background-color 0.3s ease;
+}
+
+.menu-button.active {
+    background-color: #007bff; /* Цвет фона для активной вкладки */
+    color: white; /* Цвет текста для активной вкладки */
+    border-radius: 5px; /* Скругление углов */
+}
+
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh; /* Высота экрана для размещения вкладок сверху или снизу */
+    justify-content: flex-start; /* Изменяем на "flex-start", чтобы элементы не разделялись */
+}
+
+.menu-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+/* Добавляем отступ сверху для ПК-версии */
+@media (min-width: 1000px) {
+    .menu-tabs {
+        position: static; /* Оставляем вкладки сверху */
+        margin-top: 40px; /* Увеличиваем отступ сверху */
+    }
+
+    .course-tiles {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap; /* Для корректного отображения плиток */
+        gap: 20px; /* Расстояние между плитками */
+        margin-top: 20px; /* Отступ сверху */
+    }
+
+    .course-tile {
+        flex: 1 1 calc(33.333% - 40px); /* Три плитки в строке */
+        max-width: calc(33.333% - 40px); /* Ограничиваем ширину плитки */
+        box-sizing: border-box; /* Учитываем padding и border в ширине */
+    }
+}
+
+/* Стили для мобильной версии */
+@media (max-width: 1000px) {
+    .menu-tabs {
+        position: fixed; /* Перемещаем вкладки вниз */
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #fff; /* Белый фон */
+        padding: 5px 0; /* Уменьшаем отступы сверху и снизу */
+        border-top: 1px solid #ccc; /* Разделительная линия сверху */
+        justify-content: center; /* Центрируем вкладки */
+        gap: 10px; /* Уменьшаем расстояние между вкладками */
+        z-index: 100; /* Поверх других элементов */
+    }
+
+    .course-tiles {
+        display: flex;
+        flex-direction: column; /* Плитки в столбик */
+        gap: 10px; /* Расстояние между плитками */
+        margin-top: 0; /* Убираем дополнительный отступ */
+    }
+
+    .course-tile {
+        width: 100%; /* Плитка на всю ширину */
+        box-sizing: border-box; /* Учитываем padding и border в ширине */
+    }
+}
