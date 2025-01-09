@@ -4,10 +4,10 @@ const Sequelize = require('sequelize');
 const path = require('path');
 const cors = require('cors'); // Импортируйте cors
 const passport = require('passport');
-const initPassport = require('./config/passport');
+const initPassport = require('./passport/passport');
 
 const { swaggerUi, swaggerDocs } = require('./swagger/swagger');
-const connectDB = require('./config/mongoConnection');
+const connectDB = require('./mongoDB/mongoConnection');
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -131,9 +131,6 @@ app.listen(PORT, async () => {
   try {
     await sequelize.authenticate();
     console.log('Соединение с базой данных успешно.');
-
-    // Логирование данных из моделей...
-    // (Тут ваш код для логирования данных из моделей)
 
   } catch (error) {
     console.error('Ошибка при получении данных:', error.message);

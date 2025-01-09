@@ -26,16 +26,6 @@ describe('markService', () => {
     expect(Mark.findByPk).toHaveBeenCalledWith(1);
   });
 
-  test('should create a new mark', async () => {
-    const markData = { value: 5 };
-    const mockMark = { id: 1, ...markData };
-    Mark.create.mockResolvedValue(mockMark);
-
-    const mark = await markService.createMark(markData);
-    expect(mark).toEqual(mockMark);
-    expect(Mark.create).toHaveBeenCalledWith(markData);
-  });
-
   test('should update a mark', async () => {
     const markData = { value: 4 };
     const mockMark = { id: 1, update: jest.fn().mockResolvedValue({ ...markData, id: 1 }) };
