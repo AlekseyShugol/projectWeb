@@ -12,7 +12,7 @@ const getUserFromToken = (token) => {
   }
 };
 
-// Middleware для аутентификации
+// для аутентификации
 const authenticate = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
 
@@ -30,7 +30,7 @@ const authenticate = (req, res, next) => {
   }
 };
 
-// Middleware для авторизации
+// для авторизации
 const authorize = (allowedRoles) => {
   return (req, res, next) => {
     const authHeader = req.headers['authorization'];
