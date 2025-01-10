@@ -14,11 +14,6 @@ class UserRepository {
   }
 
   async update(id, data) {
-    // Отклоняем обновление пользователя с ID 1
-    if (id === "1") {
-      return false;
-    }
-
     const user = await User.findByPk(id);
     if (user) {
       return await user.update(data);
@@ -27,11 +22,6 @@ class UserRepository {
   }
 
   async delete(id) {
-    // Отклоняем удаление пользователя с ID 1
-    if (id === 1) {
-      return false;
-    }
-
     const user = await User.findByPk(id);
     if (user) {
       await user.destroy();

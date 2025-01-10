@@ -28,7 +28,7 @@ exports.createCourse = async (req, res) => {
     const newCourse = await courseService.createCourse(req.body);
     res.status(201).json(newCourse);
   } catch (error) {
-    res.status(400).json({ message: 'Error creating course' });
+    res.status(400).json({ message: 'Error creating course ' + error });
   }
 };
 
@@ -41,7 +41,7 @@ exports.updateCourse = async (req, res) => {
       res.status(404).json({ message: 'Course not found' });
     }
   } catch (error) {
-    res.status(400).json({ message: 'Error updating course' });
+    res.status(400).json({ message: 'Error updating course ' + error  });
   }
 };
 

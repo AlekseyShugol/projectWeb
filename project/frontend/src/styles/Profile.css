@@ -34,7 +34,7 @@
     margin-top: 20px;
 }
 
-.edit-button, .save-button {
+.edit-button-user-profile, .save-button {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
@@ -42,8 +42,11 @@
     color: #fff;
 }
 
-.edit-button {
+.edit-button-user-profile {
     background-color: #007bff; /* Синий цвет */
+}
+.edit-button-user-profile:hover {
+    background-color: #0058bd; /* Синий цвет */
 }
 
 .save-button {
@@ -87,6 +90,20 @@
 .fade-out {
     opacity: 0;
     animation: fadeOut 2s forwards; /* Анимация на 5 секунд */
+}
+
+.cancel-button {
+    margin-left: 10px; /* Отступ слева */
+    padding: 10px 15px; /* Внутренние отступы */
+    border: none; /* Убираем рамку */
+    border-radius: 4px; /* Закругляем углы */
+    background-color: #f44336; /* Красный цвет */
+    color: white; /* Белый текст */
+    cursor: pointer; /* Курсор в виде указателя */
+}
+
+.cancel-button:hover {
+    background-color: #d32f2f; /* Темнее при наведении */
 }
 
 @keyframes fadeOut {
