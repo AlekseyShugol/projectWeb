@@ -50,6 +50,20 @@
     }
 }
 
+.logout-button-menu {
+    margin-left: 20px; /* Отступ слева */
+    padding: 10px 15px; /* Внутренние отступы */
+    border: none; /* Убираем рамку */
+    border-radius: 4px; /* Закругляем углы */
+    background-color: #f44336; /* Красный цвет */
+    color: white; /* Белый текст */
+    cursor: pointer; /* Курсор в виде указателя */
+}
+
+.logout-button-menu:hover {
+    background-color: #d32f2f; /* Темнее при наведении */
+}
+
 /* Стили для мобильной версии */
 @media (max-width: 1000px) {
     .menu-tabs {

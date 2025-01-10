@@ -54,7 +54,14 @@ describe('userService', () => {
     expect(User.findByPk).toHaveBeenCalledWith(999);
   });
 
+  test('should delete a user', async () => {
+    const mockUser = { id: 1, destroy: jest.fn() };
+    User.findByPk.mockResolvedValue(mockUser);
 
+    const result = await userService.deleteUser(1);
+    expect(result).toBe(true);
+    expect(mockUser.destroy).toHaveBeenCalled();
+  });
 
   test('should return false when deleting a non-existent user', async () => {
     User.findByPk.mockResolvedValue(null);

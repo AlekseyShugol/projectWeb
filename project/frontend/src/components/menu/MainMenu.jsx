@@ -1,22 +1,28 @@
 import React from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import {getUserFromToken} from "../../functions/tokenUtils/tokenUtils.js";
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { getUserFromToken } from "../../functions/tokenUtils/tokenUtils.js";
 import '../../styles/MainMenu.css'; // Импортируем стили
 
 const MainMenu = () => {
     const location = useLocation(); // Получаем текущий путь
+    const navigate = useNavigate(); // Создаем навигатор
     const token = localStorage.getItem('token'); // Получаем токен из localStorage
     let isAdmin = false;
 
     if (token) {
         try {
             const decodedToken = getUserFromToken(token);
-            console.log('Декодированный токен:', decodedToken); // Логируем декодированный токен
-            isAdmin = decodedToken.role === '3'; // Проверяем, является ли роль администратора
+            console.log('Декодированный токен:', decodedToken);
+            isAdmin = decodedToken.role === '3';
         } catch (error) {
             console.error('Ошибка декодирования токена:', error);
         }
     }
+
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // Удаляем токен
+        navigate('/'); // Перенаправляем на главную страницу
+    };
 
     return (
         <div className="main-menu">
@@ -39,7 +45,7 @@ const MainMenu = () => {
                 >
                     Мой профиль
                 </Link>
-                {isAdmin && ( // Если пользователь администратор, показываем панель администратора
+                {isAdmin && (
                     <Link
                         to="/admin"
                         className={`menu-button ${location.pathname === '/admin' ? 'active' : ''}`}
@@ -47,6 +53,7 @@ const MainMenu = () => {
                         Панель администратора
                     </Link>
                 )}
+                <button className="logout-button-menu" onClick={handleLogout}>Выход</button>
             </nav>
             <Outlet /> {/* Для рендеринга вложенных маршрутов */}
         </div>

@@ -42,14 +42,30 @@ const Registration = () => {
             });
 
             const result = await response.json();
+            // Проверка успешности ответа
             if (response.ok) {
                 setMessage('Регистрация прошла успешно!');
                 console.log('Ответ от сервера:', result);
                 // Перенаправление на главную страницу
                 navigate('/'); // Замените '/' на нужный маршрут
             } else {
-                setMessage(`Ошибка при регистрации: ${result.error}`);
-                console.log('Ошибка:', result.error);
+                // Обработка ошибок от сервера
+                if (result.message) {
+                    if (result.message.includes('SequelizeUniqueConstraintError')) {
+                        if (result.message.includes('users_login_key')) {
+                            setMessage('Ошибка при регистрации: Логин уже занят. Пожалуйста, выберите другой логин.');
+                        } else if (result.message.includes('users_email_key')) {
+                            setMessage('Ошибка при регистрации: Email уже занят. Пожалуйста, используйте другой email.');
+                        } else {
+                            setMessage(`Ошибка при регистрации: ${result.message}`);
+                        }
+                    } else {
+                        setMessage(`Ошибка при регистрации: ${result.message}`);
+                    }
+                } else {
+                    setMessage('Неизвестная ошибка при регистрации.');
+                }
+                console.log('Ошибка:', result.message || result.error);
             }
         } catch (error) {
             setMessage(`Ошибка: ${error.message}`);
@@ -101,7 +117,7 @@ const Registration = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <button className="registration-button" onClick={handleRegistration}>Зарегистрироваться</button>
-            {message && <p className="registration-message">{message}</p>}
+            {message && <p className="registration-message">{message}</p>} {/* Выводим сообщение */}
             <button className="logout-button" onClick={handleLogout}>Выход</button> {/* Кнопка выхода */}
         </div>
     );

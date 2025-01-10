@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getUserFromToken } from '../../functions/tokenUtils/tokenUtils.js';
-import { fetchUserFromId, updateUser } from '../../functions/api/userApi.js';
-import '../../styles/Profile.css';
+import { getUserFromToken } from '../../../functions/tokenUtils/tokenUtils.js';
+import { fetchUserFromId, updateUser } from '../../../functions/api/userApi.js';
+import '../../../styles/Profile.css';
 
 const Profile = () => {
     const [user, setUser] = useState(null);
@@ -82,6 +82,14 @@ const Profile = () => {
             setError('Ошибка при обновлении данных.');
             console.error(error);
         }
+    };
+
+    const handleCancelEdit = () => {
+        setEditing(false); // Выход из режима редактирования
+        setFormData(user); // Сбрасываем данные формы к исходным
+        setPasswordError(''); // Сбрасываем ошибки пароля
+        setFieldError(''); // Сбрасываем ошибки полей
+        setConfirmPassword(''); // Сбрасываем подтверждение пароля
     };
 
     if (loading) return <p>Загрузка профиля...</p>;
@@ -171,9 +179,12 @@ const Profile = () => {
                     )}
                     <div className="profile-buttons">
                         {editing ? (
-                            <button className="save-button" onClick={handleEdit}>Сохранить</button>
+                            <>
+                                <button className="save-button" onClick={handleEdit}>Сохранить</button>
+                                <button className="cancel-button" onClick={handleCancelEdit}>Отмена</button>
+                            </>
                         ) : (
-                            <button className="edit-button" onClick={() => setEditing(true)}>Редактировать</button>
+                            <button className="edit-button-user-profile" onClick={() => setEditing(true)}>Редактировать</button>
                         )}
                     </div>
                     {successMessage && (

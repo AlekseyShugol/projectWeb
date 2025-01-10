@@ -1,8 +1,8 @@
-// Courses.jsx
+
 import React, { useEffect, useState } from 'react';
-import { fetchCoursesData } from '../../functions/api/coursesApi.js';
-import '../../styles/Courses.css';
-import {getUserFromToken} from "../../functions/tokenUtils/tokenUtils.js";
+import { fetchCoursesData } from '../../../functions/api/coursesApi.js';
+import '../../../styles/Courses.css';
+import {getUserFromToken} from "../../../functions/tokenUtils/tokenUtils.js";
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
