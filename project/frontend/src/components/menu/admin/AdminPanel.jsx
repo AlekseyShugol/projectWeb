@@ -27,8 +27,8 @@ const AdminPanel = () => {
                     </li>
                     <li>
                         <Link
-                            to="users"
-                            className={`tab-button ${location.pathname.includes('users') ? 'active' : ''}`}
+                            to="adminUsersView"
+                            className={`tab-button ${location.pathname.includes('adminUsersView') ? 'active' : ''}`}
                         >
                             Просмотр пользователей
                         </Link>

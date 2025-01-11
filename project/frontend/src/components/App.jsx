@@ -6,8 +6,9 @@ import Registration from './authorization/Registration.jsx';
 import MainMenu from './menu/MainMenu.jsx';
 import Courses from './menu/courses/Courses.jsx';
 import Profile from "./menu/Profile/Profile.jsx";
-import AdminCourses from "./menu/admin/courseList/AdminCourses.jsx";
+import AdminCoursesList from "./menu/admin/adminPanelContent/AdminCoursesList.jsx";
 import AdminPanel from "./menu/admin/AdminPanel.jsx";
+import AdminUsersList from "./menu/admin/adminPanelContent/AdminUserList.jsx";
 
 const App = () => {
     return (
@@ -20,7 +21,8 @@ const App = () => {
                     <Route path="courses" element={<Courses />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="admin/*" element={<AdminPanel />}>
-                        <Route path="adminCoursesView" element={<AdminCourses />} />
+                        <Route path="adminCoursesView" element={<AdminCoursesList />} />
+                        <Route path="adminUsersView" element={<AdminUsersList />} />
                         {/* Добавьте другие маршруты для администраторов здесь */}
                     </Route>
                 </Route>

@@ -3,7 +3,7 @@ import { fetchCoursesData, updateCourseData, deleteCourseData, addCourseData } f
 import '../../../../styles/AdminCourses.css';
 import { getUserFromToken } from "../../../../functions/tokenUtils/tokenUtils.js";
 
-const AdminCourses = () => {
+const AdminCoursesList = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -183,4 +183,4 @@ const AdminCourses = () => {
     );
 };
 
-export default AdminCourses;
+export default AdminCoursesList;
