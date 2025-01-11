@@ -27,13 +27,16 @@ describe('markService', () => {
   });
 
   test('should create a new mark', async () => {
-    const markData = { value: 5 };
-    const mockMark = { id: 1, ...markData };
+    const userId = 1; // Mock user ID
+    const roleId = 2; // Mock role ID (not a teacher)
+    const markData = { value: 5, lesson_id: 101 }; // Include lesson_id as required
+    const mockMark = { id: 2, ...markData, teacher_id: userId }; // Mock returned mark with teacher_id
+
     Mark.create.mockResolvedValue(mockMark);
 
-    const mark = await markService.createMark(markData);
+    const mark = await markService.createMark(userId, markData, roleId);
     expect(mark).toEqual(mockMark);
-    expect(Mark.create).toHaveBeenCalledWith(markData);
+    expect(Mark.create).toHaveBeenCalledWith({ ...markData, teacher_id: userId });
   });
 
   test('should update a mark', async () => {

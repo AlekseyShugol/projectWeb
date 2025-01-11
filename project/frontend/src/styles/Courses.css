@@ -1,4 +1,4 @@
-/* AdminCourses.css */
+/* AdminCoursesList.css */
 .courses-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 4 колонки для больших экранов */
