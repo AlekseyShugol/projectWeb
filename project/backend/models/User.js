@@ -3,11 +3,11 @@ const bcrypt = require('bcrypt');
 
 class User extends Model {
   static associate(models) {
-    User.belongsTo(models.UserRole, { foreignKey: 'role_id', as: 'role' });
-    User.hasMany(models.UserCourse, { foreignKey: 'user_id', as: 'courses' });
-    User.hasMany(models.Lesson, { foreignKey: 'teacher_id', as: 'lessons' });
-    User.hasMany(models.Mark, { foreignKey: 'student_id', as: 'marks' });
-    User.hasMany(models.Mark, { foreignKey: 'teacher_id', as: 'givenMarks' });
+    User.belongsTo(models.UserRole, { foreignKey: 'role_id', as: 'role', onDelete: 'CASCADE' });
+    User.hasMany(models.UserCourse, { foreignKey: 'user_id', as: 'courses', onDelete: 'CASCADE' });
+    User.hasMany(models.Lesson, { foreignKey: 'teacher_id', as: 'lessons', onDelete: 'CASCADE' });
+    User.hasMany(models.Mark, { foreignKey: 'student_id', as: 'marks', onDelete: 'CASCADE' });
+    User.hasMany(models.Mark, { foreignKey: 'teacher_id', as: 'givenMarks', onDelete: 'CASCADE' });
   }
 
   async checkPassword(password) {
@@ -39,7 +39,7 @@ const initUserModel = (sequelize) => {
     },
     email: {
       type: DataTypes.STRING(100),
-      allowNull: false //change 04.01.25
+      allowNull: false,
     },
     role_id: {
       type: DataTypes.BIGINT,

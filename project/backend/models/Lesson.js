@@ -2,9 +2,9 @@ const { Model, DataTypes } = require('sequelize');
 
 class Lesson extends Model {
   static associate(models) {
-    Lesson.belongsTo(models.Course, { foreignKey: 'course_id', as: 'course' });
-    Lesson.belongsTo(models.User, { foreignKey: 'teacher_id', as: 'teacher' });
-    Lesson.hasMany(models.Mark, { foreignKey: 'lesson_id', as: 'marks' });
+    Lesson.belongsTo(models.Course, { foreignKey: 'course_id', as: 'course', onDelete: 'CASCADE' });
+    Lesson.belongsTo(models.User, { foreignKey: 'teacher_id', as: 'teacher', onDelete: 'CASCADE' });
+    Lesson.hasMany(models.Mark, { foreignKey: 'lesson_id', as: 'marks', onDelete: 'CASCADE' });
   }
 }
 

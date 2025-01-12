@@ -47,14 +47,16 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
+  const userId = req.params.id;
+
   try {
-    const success = await userService.deleteUser(req.params.id);
-    if (success) {
-      res.status(204).send();
-    } else {
-      res.status(404).json({ message: 'User not found' });
+    const deleted = await userService.deleteUser(userId);
+    if (!deleted) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
     }
+    res.status(204).send();
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting user' });
+    console.error('Ошибка при удалении пользователя:', error);
+    res.status(500).json({ message: 'Ошибка при удалении пользователя: ' + error.message });
   }
 };

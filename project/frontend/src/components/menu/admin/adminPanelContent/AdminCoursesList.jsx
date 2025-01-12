@@ -42,7 +42,7 @@ const AdminCoursesList = () => {
     const handleUpdateCourse = async (courseId) => {
         try {
             const updatedData = {
-                user_cource_id: "1", // Устанавливаем правильное поле
+                user_cource_id: null, // Устанавливаем правильное поле
                 price: updatedPrice.trim(),
                 name: updatedName.trim(),
             };
@@ -76,10 +76,18 @@ const AdminCoursesList = () => {
     const handleAddCourse = async () => {
         try {
             const newCourseData = {
-                user_cource_id: "1",
+                user_cource_id: null, // Устанавливаем правильное значение null
                 name: newCourseName,
-                price: newCoursePrice,
+                price: parseFloat(newCoursePrice), // Преобразуем в число
             };
+
+            // Проверка на пустые поля
+            if (!newCourseData.name || !newCourseData.price) {
+                throw new Error('Название и цена курса должны быть заполнены корректно.');
+            }
+
+            console.log('Отправляемые данные для добавления курса:', newCourseData);
+
             const addedCourse = await addCourseData(newCourseData);
             setCourses([...courses, addedCourse]);
             setNewCourseName('');
@@ -87,7 +95,7 @@ const AdminCoursesList = () => {
             setIsAddingCourse(false); // Закрываем поля после добавления курса
         } catch (error) {
             console.error(error);
-            setError('Ошибка при добавлении курса');
+            setError('Ошибка при добавлении курса: ' + error.message);
         }
     };
 

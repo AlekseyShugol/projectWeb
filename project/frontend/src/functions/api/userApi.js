@@ -114,3 +114,12 @@ export const fetchCoursesByUserId = async (userId) => {
         throw new Error('Не удалось загрузить курсы. Попробуйте позже.');
     }
 };
+
+
+
+
+
+// Удаление курса пользователя
+export const deleteUserCourse = async (userId, courseId) => {
+    await axios.delete(`http://localhost:8000/api/user-courses?user_id=${userId}&course_id=${courseId}`);
+};

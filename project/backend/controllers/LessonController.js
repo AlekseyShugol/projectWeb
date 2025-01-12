@@ -49,11 +49,12 @@ exports.deleteLesson = async (req, res) => {
   try {
     const success = await lessonService.deleteLesson(req.params.id);
     if (success) {
-      res.status(204).send();
+      res.status(204).send(); // Успешное удаление
     } else {
-      res.status(404).json({ message: 'Lesson not found' });
+      res.status(404).json({ message: 'Lesson not found' }); // Урок не найден
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting lesson' });
+    console.error('Error deleting lesson:', error);
+    res.status(500).json({ message: 'Error deleting lesson' }); // Ошибка удаления
   }
 };

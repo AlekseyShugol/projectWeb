@@ -47,13 +47,13 @@ exports.updateCourse = async (req, res) => {
 
 exports.deleteCourse = async (req, res) => {
   try {
-    const success = await courseService.deleteCourse(req.params.id);
+    const success = await courseService.deleteCourseWithLessons(req.params.id);
     if (success) {
       res.status(204).send();
     } else {
       res.status(404).json({ message: 'Course not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting course' });
+    res.status(500).json({ message: 'Error deleting course ' + error });
   }
 };

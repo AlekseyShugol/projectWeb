@@ -2,9 +2,9 @@ const { Model, DataTypes } = require('sequelize');
 
 class Mark extends Model {
   static associate(models) {
-    Mark.belongsTo(models.User, { foreignKey: 'student_id', as: 'student' });
-    Mark.belongsTo(models.User, { foreignKey: 'teacher_id', as: 'teacher' });
-    Mark.belongsTo(models.Lesson, { foreignKey: 'lesson_id', as: 'lesson' });
+    Mark.belongsTo(models.User, { foreignKey: 'student_id', as: 'student', onDelete: 'CASCADE' });
+    Mark.belongsTo(models.User, { foreignKey: 'teacher_id', as: 'teacher', onDelete: 'CASCADE' });
+    Mark.belongsTo(models.Lesson, { foreignKey: 'lesson_id', as: 'lesson', onDelete: 'CASCADE' });
   }
 }
 

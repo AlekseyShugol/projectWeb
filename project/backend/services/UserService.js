@@ -1,4 +1,5 @@
 const userRepository = require('../repositories/UserRepository');
+const userCourseRepository = require('../repositories/UserCourseRepository'); // Импортируйте репозиторий курсов
 
 const userService = {
   async getAllUsers() {
@@ -17,8 +18,12 @@ const userService = {
     return await userRepository.update(id, data);
   },
 
-  async deleteUser(id) {
-    return await userRepository.delete(id);
+  async deleteUser(userId) {
+    // Сначала удаляем все связанные курсы
+    await userCourseRepository.deleteByUserId(userId); // Метод для удаления курсов
+
+    // Затем удаляем пользователя
+    return await userRepository.delete(userId);
   }
 };
 

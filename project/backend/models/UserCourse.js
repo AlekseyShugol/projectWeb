@@ -2,8 +2,8 @@ const { Model, DataTypes } = require('sequelize');
 
 class UserCourse extends Model {
   static associate(models) {
-    UserCourse.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
-    UserCourse.hasMany(models.Course, { foreignKey: 'user_cource_id', as: 'courses' });
+    UserCourse.belongsTo(models.User, { foreignKey: 'user_id', as: 'user', onDelete: 'CASCADE' });
+    UserCourse.hasMany(models.Course, { foreignKey: 'user_cource_id', as: 'courses', onDelete: 'CASCADE' });
   }
 }
 
