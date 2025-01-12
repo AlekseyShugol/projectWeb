@@ -54,6 +54,6 @@ exports.deleteUserCourse = async (req, res) => {
       res.status(404).json({ message: 'UserCourse not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting user course' });
+    res.status(500).json({ message: 'Error deleting user course ' + error});
   }
 };

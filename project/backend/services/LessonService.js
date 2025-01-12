@@ -17,8 +17,9 @@ const lessonService = {
     return await lessonRepository.update(id, data);
   },
 
+  // Обновленный метод для удаления урока и оценок
   async deleteLesson(id) {
-    return await lessonRepository.delete(id);
+    return await lessonRepository.deleteLessonWithMarks(id);
   }
 };
 

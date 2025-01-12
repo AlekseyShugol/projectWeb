@@ -29,6 +29,10 @@ class MarkRepository {
     }
     return false;
   }
+
+  async deleteByLessonId(lessonId) {
+    return await Mark.destroy({ where: { lesson_id: lessonId } });
+  }
 }
 
 module.exports = new MarkRepository();

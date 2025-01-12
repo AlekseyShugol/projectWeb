@@ -1,11 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import { fetchUsersData, updateUser, deleteUser, registerUser, fetchCoursesByUserId } from "../../../../functions/api/userApi.js";
-import "../../../../styles/AdminUsersList.css"; // Не забудьте импортировать стили
+import { fetchUsersData, updateUser, registerUser, deleteUser, deleteUserCourse } from "../../../../functions/api/userApi.js";
+import "../../../../styles/AdminUsersList.css";
+import { fetchUserCourses } from "../../../../functions/api/userCoursesApi.js";
 
 const roleMap = {
     1: 'Студент',
     2: 'Преподаватель',
     3: 'Администратор'
+};
+
+// Функции
+const useFetchUsers = (setUsers, setLoading, setError) => {
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const data = await fetchUsersData();
+                setUsers(data);
+            } catch (error) {
+                setError('Ошибка загрузки пользователей');
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUsers();
+    }, [setUsers, setLoading, setError]);
+};
+
+const fetchCoursesByUserId = async (userId, setCourses, setSelectedUserId, setShowDetailPanel, setError) => {
+    try {
+        const coursesList = await fetchUserCourses(userId);
+        setCourses(coursesList);
+        setSelectedUserId(userId);
+        setShowDetailPanel(true);
+    } catch (error) {
+        console.error(error);
+        setError('Ошибка при загрузке курсов');
+    }
+};
+
+const handleDeleteCourse = async (selectedUserId, courseId, setCourses, setError) => {
+    try {
+        await deleteUserCourse(selectedUserId, courseId);
+        setCourses(prevCourses => prevCourses.filter(course => course.course_id !== courseId));
+    } catch (error) {
+        console.error(error);
+        setError('Ошибка при удалении курса');
+    }
 };
 
 const AdminUsersList = () => {
@@ -21,31 +63,17 @@ const AdminUsersList = () => {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [selectedRole, setSelectedRole] = useState('all');
     const [courses, setCourses] = useState([]);
-    const [selectedUserId, setSelectedUserId] = useState(null); // Для хранения выбранного студента
+    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [showDetailPanel, setShowDetailPanel] = useState(false);
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const data = await fetchUsersData();
-                setUsers(data);
-                setFilteredUsers(data);
-            } catch (error) {
-                setError('Ошибка загрузки пользователей');
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUsers();
-    }, []);
+    useFetchUsers(setUsers, setLoading, setError);
 
     useEffect(() => {
         if (selectedRole === 'all') {
-            setFilteredUsers(users);
+            setFilteredUsers(users.sort((a, b) => a.login.localeCompare(b.login)));
         } else {
             const filtered = users.filter(user => roleMap[user.role_id].toLowerCase() === selectedRole);
-            setFilteredUsers(filtered);
+            setFilteredUsers(filtered.sort((a, b) => a.login.localeCompare(b.login)));
         }
     }, [selectedRole, users]);
 
@@ -76,16 +104,6 @@ const AdminUsersList = () => {
         }
     };
 
-    const handleDeleteUser = async (userId) => {
-        try {
-            await deleteUser(userId);
-            setUsers(users.filter(user => user.id !== userId));
-        } catch (error) {
-            console.error(error);
-            setError('Ошибка при удалении пользователя');
-        }
-    };
-
     const handleAddUser = async () => {
         try {
             const newUserData = {
@@ -103,26 +121,19 @@ const AdminUsersList = () => {
         }
     };
 
-    const handleCancelEdit = () => {
-        setEditingUser(null);
-        setUpdatedLogin('');
-        setUpdatedEmail('');
+    const handleCloseDetailPanel = () => {
+        setShowDetailPanel(false);
+        setSelectedUserId(null);
+        setCourses([]);
     };
 
-    const handleCancelAdd = () => {
-        setIsAddingUser(false);
-        setNewUserLogin('');
-        setNewUserEmail('');
-    };
-
-    const handleViewCourses = async (userId) => {
+    const handleDeleteUser = async (userId) => {
         try {
-            const coursesList = await fetchCoursesByUserId(userId);
-            setCourses(coursesList);
-            setSelectedUserId(userId); // Сохраняем выбранного студента
+            await deleteUser(userId);
+            setUsers(users.filter(user => user.id !== userId));
         } catch (error) {
             console.error(error);
-            setError('Ошибка при загрузке курсов');
+            setError('Ошибка при удалении пользователя');
         }
     };
 
@@ -155,7 +166,7 @@ const AdminUsersList = () => {
                         className="user-input"
                     />
                     <button onClick={handleAddUser} className="save-button">Сохранить пользователя</button>
-                    <button onClick={handleCancelAdd} className="cancel-button">Отмена</button>
+                    <button onClick={() => setIsAddingUser(false)} className="cancel-button">Отмена</button>
                 </div>
             )}
 
@@ -171,39 +182,35 @@ const AdminUsersList = () => {
                 <tbody>
                 {filteredUsers.map((user) => (
                     <tr key={user.id}>
-                        <td onClick={() => user.role_id === 1 ? handleViewCourses(user.id) : null} className="clickable">
-                            {user.login}
-                        </td>
+                        <td>{user.login}</td>
+                        <td>{user.email}</td>
+                        <td>{roleMap[user.role_id]}</td>
                         <td>
-                            {user.email}
-                        </td>
-                        <td>
-                            {roleMap[user.role_id]}
-                        </td>
-                        <td>
-                            {editingUser === user.id ? (
+                            {user.role_id === "3" ? null : ( // Убираем кнопки для администраторов
                                 <>
-                                    <input
-                                        type="text"
-                                        value={updatedLogin}
-                                        onChange={(e) => setUpdatedLogin(e.target.value)}
-                                        placeholder="Обновите логин"
-                                        className="user-input"
-                                    />
-                                    <input
-                                        type="email"
-                                        value={updatedEmail}
-                                        onChange={(e) => setUpdatedEmail(e.target.value)}
-                                        placeholder="Обновите email"
-                                        className="user-input"
-                                    />
-                                    <button className="save-button" onClick={() => handleUpdateUser(user.id)}>Сохранить</button>
-                                    <button className="cancel-button" onClick={handleCancelEdit}>Назад</button>
-                                </>
-                            ) : (
-                                <>
-                                    <button className="edit-button" onClick={() => handleEditClick(user)} disabled={user.role_id === 3}>Изменить</button>
-                                    <button className="delete-button" onClick={() => handleDeleteUser(user.id)}>Удалить</button>
+                                    {editingUser === user.id ? (
+                                        <div>
+                                            <input
+                                                type="text"
+                                                value={updatedLogin}
+                                                onChange={(e) => setUpdatedLogin(e.target.value)}
+                                                placeholder="Логин"
+                                            />
+                                            <input
+                                                type="email"
+                                                value={updatedEmail}
+                                                onChange={(e) => setUpdatedEmail(e.target.value)}
+                                                placeholder="Email"
+                                            />
+                                            <button onClick={() => handleUpdateUser(user.id)}>Сохранить</button>
+                                            <button onClick={() => setEditingUser(null)}>Отмена</button>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <button className="edit-button" onClick={() => handleEditClick(user)}>Изменить</button>
+                                            <button className="delete-button" onClick={() => handleDeleteUser(user.id)}>Удалить</button>
+                                        </>
+                                    )}
                                 </>
                             )}
                         </td>
@@ -212,14 +219,30 @@ const AdminUsersList = () => {
                 </tbody>
             </table>
 
-            {courses.length > 0 && selectedUserId && (
+            {showDetailPanel && (
                 <div className="courses-list">
-                    <h3>Курсы студента:</h3>
-                    <ul>
+                    <h3>Курсы пользователя:</h3>
+                    <button onClick={handleCloseDetailPanel} className="close-button">Закрыть</button>
+                    <table className="courses-table">
+                        <thead>
+                        <tr>
+                            <th>Курс ID</th>
+                            <th>Общая стоимость</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                         {courses.map(course => (
-                            <li key={course.id}>{course.name}</li>
+                            <tr key={course.course_id}>
+                                <td>{course.course_id}</td>
+                                <td>{course.total_price}</td>
+                                <td>
+                                    <button className="delete-button" onClick={() => handleDeleteCourse(selectedUserId, course.course_id, setCourses, setError)}>Удалить</button>
+                                </td>
+                            </tr>
                         ))}
-                    </ul>
+                        </tbody>
+                    </table>
                 </div>
             )}
         </div>

@@ -1,4 +1,3 @@
-/* MainMenu.css */
 .menu-button {
     padding: 10px 15px;
     text-decoration: none;
@@ -50,18 +49,20 @@
     }
 }
 
-.logout-button-menu {
+.logout-button-mainMenu {
     margin-left: 20px; /* Отступ слева */
     padding: 10px 15px; /* Внутренние отступы */
     border: none; /* Убираем рамку */
     border-radius: 4px; /* Закругляем углы */
-    background-color: #f44336; /* Красный цвет */
-    color: white; /* Белый текст */
+    background-color: #ccc; /* Серый фон по умолчанию */
+    color: #333; /* Цвет текста */
     cursor: pointer; /* Курсор в виде указателя */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход для фона и цвета текста */
 }
 
-.logout-button-menu:hover {
-    background-color: #d32f2f; /* Темнее при наведении */
+.logout-button-mainMenu:hover {
+    background-color: #f44336; /* Красный фон при наведении */
+    color: white; /* Белый текст при наведении */
 }
 
 /* Стили для мобильной версии */

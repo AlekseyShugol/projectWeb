@@ -39,6 +39,45 @@
     background-color: #0056b3; /* Тёмно-синий при наведении */
 }
 
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4caf50; /* Зеленый фон для успешного сообщения */
+    color: white; /* Белый текст */
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: opacity 0.5s ease-in-out; /* Плавное появление */
+    opacity: 0; /* Начальное состояние */
+    animation: fadeIn 0.5s forwards; /* Анимация появления */
+}
+
+.notification button {
+    background-color: transparent; /* Прозрачный фон для кнопки */
+    border: none; /* Убираем границу */
+    color: white; /* Белый текст */
+    cursor: pointer; /* Указатель при наведении */
+    margin-left: 10px; /* Отступ слева от текста */
+    font-weight: bold; /* Жирный текст */
+}
+
+.notification button:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Полностью прозрачный */
+        transform: translateY(-10px); /* Поднять немного вверх */
+    }
+    to {
+        opacity: 1; /* Полностью видимый */
+        transform: translateY(0); /* Вернуть на место */
+    }
+}
+
 /* Адаптивные стили для мобильных устройств */
 @media (max-width: 1200px) {
     .courses-container {

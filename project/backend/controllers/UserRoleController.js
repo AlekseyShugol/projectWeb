@@ -54,6 +54,6 @@ exports.deleteUserRole = async (req, res) => {
       res.status(404).json({ message: 'UserRole not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting user role' });
+    res.status(500).json({ message: 'Error deleting user role ' + error.message });
   }
 };

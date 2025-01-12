@@ -53,7 +53,7 @@ const MainMenu = () => {
                         Панель администратора
                     </Link>
                 )}
-                <button className="logout-button-menu" onClick={handleLogout}>Выход</button>
+                <button className="logout-button-mainMenu" onClick={handleLogout}>Выход</button>
             </nav>
             <Outlet /> {/* Для рендеринга вложенных маршрутов */}
         </div>

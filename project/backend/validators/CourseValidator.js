@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const courseSchema = Joi.object({
-  user_cource_id: Joi.number().integer().required(),
+  user_cource_id: Joi.number().allow(null).integer().required(),
   price: Joi.number().integer().optional(),
   name: Joi.string().max(100).required(),
 });
