@@ -46,12 +46,12 @@
 }
 
 .admin-edit-button {
-    background-color: #ffc107;
+    background-color: #007bff;
     color: white;
 }
 
 .admin-edit-button:hover {
-    background-color: #e0a800;
+    background-color: #0056b3;
 }
 
 .admin-delete-button {
@@ -104,6 +104,23 @@
 .admin-cancel-button {
     background-color: #f44336; /* Красный */
     color: white;
+}
+
+.table-container {
+    max-height: 400px; /* Установите желаемую высоту */
+    overflow-y: auto;  /* Включите вертикальную прокрутку */
+    margin-top: 20px;  /* Добавьте отступ сверху для красоты */
+}
+
+.admin-courses-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-courses-table th, .admin-courses-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
 }
 
 /* Адаптивные стили */

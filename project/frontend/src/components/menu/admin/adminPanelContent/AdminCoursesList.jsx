@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchCoursesData, updateCourseData, deleteCourseData, addCourseData } from "../../../../functions/api/coursesApi.js";
 import '../../../../styles/AdminCourses.css';
 import { getUserFromToken } from "../../../../functions/tokenUtils/tokenUtils.js";
+import CustomConfirmationDialog from "../../../dialog/CustomConfirmationDialog.jsx";
 
 const AdminCoursesList = () => {
     const [courses, setCourses] = useState([]);
@@ -12,7 +13,9 @@ const AdminCoursesList = () => {
     const [updatedPrice, setUpdatedPrice] = useState('');
     const [newCourseName, setNewCourseName] = useState('');
     const [newCoursePrice, setNewCoursePrice] = useState('');
-    const [isAddingCourse, setIsAddingCourse] = useState(false); // Состояние для управления отображением полей добавления курса
+    const [isAddingCourse, setIsAddingCourse] = useState(false);
+    const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+    const [selectedCourseId, setSelectedCourseId] = useState(null);
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -42,12 +45,11 @@ const AdminCoursesList = () => {
     const handleUpdateCourse = async (courseId) => {
         try {
             const updatedData = {
-                user_cource_id: null, // Устанавливаем правильное поле
+                user_cource_id: null,
                 price: updatedPrice.trim(),
                 name: updatedName.trim(),
             };
 
-            // Проверка на пустые поля
             if (!updatedData.name || !updatedData.price) {
                 throw new Error('Имя и цена курса должны быть заполнены корректно.');
             }
@@ -63,25 +65,34 @@ const AdminCoursesList = () => {
         }
     };
 
-    const handleDeleteCourse = async (courseId) => {
-        try {
-            await deleteCourseData(courseId);
-            setCourses(courses.filter(course => course.id !== courseId));
-        } catch (error) {
-            console.error(error);
-            setError('Ошибка при удалении курса');
+    const confirmDeleteCourse = async () => {
+        if (selectedCourseId) {
+            try {
+                await deleteCourseData(selectedCourseId);
+                setCourses(courses.filter(course => course.id !== selectedCourseId));
+            } catch (error) {
+                console.error(error);
+                setError('Ошибка при удалении курса');
+            } finally {
+                setShowConfirmationDialog(false);
+                setSelectedCourseId(null);
+            }
         }
+    };
+
+    const handleDeleteCourse = (courseId) => {
+        setSelectedCourseId(courseId);
+        setShowConfirmationDialog(true);
     };
 
     const handleAddCourse = async () => {
         try {
             const newCourseData = {
-                user_cource_id: null, // Устанавливаем правильное значение null
+                user_cource_id: null,
                 name: newCourseName,
-                price: parseFloat(newCoursePrice), // Преобразуем в число
+                price: parseFloat(newCoursePrice),
             };
 
-            // Проверка на пустые поля
             if (!newCourseData.name || !newCourseData.price) {
                 throw new Error('Название и цена курса должны быть заполнены корректно.');
             }
@@ -92,7 +103,7 @@ const AdminCoursesList = () => {
             setCourses([...courses, addedCourse]);
             setNewCourseName('');
             setNewCoursePrice('');
-            setIsAddingCourse(false); // Закрываем поля после добавления курса
+            setIsAddingCourse(false);
         } catch (error) {
             console.error(error);
             setError('Ошибка при добавлении курса: ' + error.message);
@@ -106,13 +117,16 @@ const AdminCoursesList = () => {
     };
 
     const handleCancelAdd = () => {
-        setIsAddingCourse(false); // Закрываем поля добавления курса
+        setIsAddingCourse(false);
         setNewCourseName('');
         setNewCoursePrice('');
     };
 
     if (loading) return <p>Загрузка курсов...</p>;
     if (error) return <p>{error}</p>;
+
+    // Отображаем только первые 9 курсов
+    const displayedCourses = courses;
 
     return (
         <div className="admin-courses-container">
@@ -137,56 +151,66 @@ const AdminCoursesList = () => {
                     <button onClick={handleCancelAdd} className="admin-cancel-button">Отмена</button>
                 </div>
             )}
-            <table className="admin-courses-table">
-                <thead>
-                <tr>
-                    <th>Название курса</th>
-                    <th>Цена</th>
-                    <th>Действия</th>
-                </tr>
-                </thead>
-                <tbody>
-                {courses.map((course) => (
-                    <tr key={course.id}>
-                        <td>
-                            {editingCourse === course.id ? (
-                                <input
-                                    type="text"
-                                    value={updatedName}
-                                    onChange={(e) => setUpdatedName(e.target.value)}
-                                />
-                            ) : (
-                                course.name
-                            )}
-                        </td>
-                        <td>
-                            {editingCourse === course.id ? (
-                                <input
-                                    type="number"
-                                    value={updatedPrice}
-                                    onChange={(e) => setUpdatedPrice(e.target.value)}
-                                />
-                            ) : (
-                                `${course.price} ₽`
-                            )}
-                        </td>
-                        <td>
-                            {editingCourse === course.id ? (
-                                <>
-                                    <button className="admin-save-button" onClick={() => handleUpdateCourse(course.id)}>Сохранить</button>
-                                    <button className="admin-cancel-button" onClick={handleCancelEdit}>Назад</button>
-                                </>
-                            ) : (
-                                <>
-                                    <button className="admin-edit-button" onClick={() => handleEditClick(course)}>Изменить</button>
-                                    <button className="admin-delete-button" onClick={() => handleDeleteCourse(course.id)}>Удалить</button>
-                                </>
-                            )}
-                        </td>
+            <div className="table-container">
+                <table className="admin-courses-table">
+                    <thead>
+                    <tr>
+                        <th>Название курса</th>
+                        <th>Цена</th>
+                        <th>Действия</th>
                     </tr>
-                ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {displayedCourses.map((course) => (
+                        <tr key={course.id}>
+                            <td>
+                                {editingCourse === course.id ? (
+                                    <input
+                                        type="text"
+                                        value={updatedName}
+                                        onChange={(e) => setUpdatedName(e.target.value)}
+                                    />
+                                ) : (
+                                    course.name
+                                )}
+                            </td>
+                            <td>
+                                {editingCourse === course.id ? (
+                                    <input
+                                        type="number"
+                                        value={updatedPrice}
+                                        onChange={(e) => setUpdatedPrice(e.target.value)}
+                                    />
+                                ) : (
+                                    `${course.price} ₽`
+                                )}
+                            </td>
+                            <td>
+                                {editingCourse === course.id ? (
+                                    <>
+                                        <button className="admin-save-button" onClick={() => handleUpdateCourse(course.id)}>Сохранить</button>
+                                        <button className="admin-cancel-button" onClick={handleCancelEdit}>Назад</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button className="admin-edit-button" onClick={() => handleEditClick(course)}>Изменить</button>
+                                        <button className="admin-delete-button" onClick={() => handleDeleteCourse(course.id)}>Удалить</button>
+                                    </>
+                                )}
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {showConfirmationDialog && (
+                <CustomConfirmationDialog
+                    message="Вы уверены, что хотите удалить этот курс?"
+                    onConfirm={confirmDeleteCourse}
+                    onCancel={() => setShowConfirmationDialog(false)}
+                />
+            )}
         </div>
     );
 };

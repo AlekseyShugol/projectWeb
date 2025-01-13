@@ -48,9 +48,19 @@ const Courses = () => {
         try {
             await subscribeCourse(userData.id, course.id, course.price);
             setNotification('Вы успешно подписались на курс!');
+
+            // Убираем уведомление через 10 секунд
+            setTimeout(() => {
+                setNotification('');
+            }, 10000);
         } catch (error) {
             console.error('Error subscribing to course:', error);
             setNotification('Ошибка при подписке на курс.');
+
+            // Убираем уведомление через 10 секунд
+            setTimeout(() => {
+                setNotification('');
+            }, 10000);
         }
     };
 
