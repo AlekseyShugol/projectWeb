@@ -8,19 +8,6 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.admin-add-user-button {
-    margin-bottom: 15px;
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.admin-add-user-button:hover {
-    background-color: #218838;
-}
 
 .users-table {
     width: 100%;
@@ -189,6 +176,82 @@
     padding: 8px;
     text-align: left;
 }
+
+
+.admin-users-list {
+    padding: 5px;
+}
+
+.admin-add-user-button {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.side-panel {
+    position: fixed;
+    top: 0;
+    right: 0; /* Align to the right */
+    width: 300px; /* Width of the side panel */
+    height: 100%;
+    background-color: #f9f9f9;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1000; /* Ensure it's above other content */
+    transition: transform 0.3s ease; /* Smooth transition */
+    transform: translateX(0); /* Initially visible */
+}
+
+.side-panel.hidden {
+    transform: translateX(100%); /* Hide the panel */
+}
+
+.close-button {
+    margin-top: 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.role-filter {
+    margin-bottom: 15px;
+}
+
+.role-filter button {
+    margin-right: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.role-filter button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.loading-message, .error-message {
+    text-align: center;
+    color: #dc3545;
+    margin-top: 20px;
+}
+.clickable-login {
+    color: #000000; /* Default color for clickable login */
+    cursor: pointer;
+    text-decoration: none; /* Remove underline */
+}
+
+.clickable-login:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: #0056b3; /* Darker blue on hover */
+}
+
 
 /* Адаптивные стили */
 @media (max-width: 600px) {

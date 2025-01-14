@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchCoursesData } from "../../../functions/api/coursesApi.js";
-import { subscribeCourse, fetchUserCourses } from '../../../functions/api/userCoursesApi.js';
+import { subscribeCourse } from '../../../functions/api/userCoursesApi.js';
 import '../../../styles/Courses.css';
 import { getUserFromToken } from "../../../functions/tokenUtils/tokenUtils.js";
 
@@ -15,7 +15,7 @@ const Notification = ({ message, onClose }) => {
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
-    const [userCourses, setUserCourses] = useState([]);
+    const [userCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [notification, setNotification] = useState('');
@@ -23,14 +23,14 @@ const Courses = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const token = localStorage.getItem('token');
-                const userData = getUserFromToken(token);
+                //const token = localStorage.getItem('token');
+                //const userData = getUserFromToken(token);
 
                 const coursesData = await fetchCoursesData();
-                const userCoursesData = await fetchUserCourses();
+                //const userCoursesData = await fetchUserCourses();
 
                 setCourses(coursesData);
-                setUserCourses(userCoursesData);
+                //setUserCourses(userCoursesData);
             } catch (error) {
                 setError('Ошибка загрузки курсов');
             } finally {

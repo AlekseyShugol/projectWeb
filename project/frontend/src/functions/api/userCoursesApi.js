@@ -1,27 +1,7 @@
 // src/functions/api/userCoursesApi.js
 
-export const fetchUserCourseFromId = async (id) => {
-    const response = await fetch(`http://localhost:8000/api/user-courses/${id}`);
-    if (!response.ok) {
-        throw new Error('Ошибка при получении курса пользователя');
-    }
-    const data = await response.json();
-    console.log('Полученный курс пользователя:', data); // Выводим результат в консоль
-    return data;
-};
-
-export const fetchUserCourses = async (userId) => {
-    const response = await fetch(`http://localhost:8000/api/user-courses?user_id=${userId}`);
-    if (!response.ok) {
-        throw new Error('Ошибка при получении курсов пользователя');
-    }
-    const data = await response.json();
-    console.log('Полученные курсы пользователя:', data); // Выводим результат в консоль
-    return data;
-};
-
 export const subscribeCourse = async (userId, courseId, totalPrice) => {
-    const token = localStorage.getItem('token'); // Получаем токен из localStorage
+    const token = localStorage.getItem('token');
 
     const response = await fetch('http://localhost:8000/api/user-courses', {
         method: 'POST',
@@ -38,6 +18,32 @@ export const subscribeCourse = async (userId, courseId, totalPrice) => {
 
     if (!response.ok) {
         throw new Error('Ошибка при подписке на курс');
+    }
+
+    const data = await response.json();
+    return data; // Возвращаем ответ от сервера
+};
+
+// src/functions/api/userCoursesApi.js
+
+export const getUserCourses = async (userId) => {
+    const token = localStorage.getItem('token');
+
+    // Проверяем наличие токена
+    if (!token) {
+        throw new Error('Токен отсутствует. Пожалуйста, войдите в систему.');
+    }
+
+    const response = await fetch(`http://localhost:8000/api/user-courses/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
+        },
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Ошибка при получении курсов пользователя');
     }
 
     const data = await response.json();

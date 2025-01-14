@@ -1,4 +1,3 @@
-import axios from 'axios';
 
 export const fetchUsersData = async () => {
     const token = localStorage.getItem('token');
@@ -99,27 +98,9 @@ export const registerUser = async (payload) => {
 
 
 
-const API_URL = 'http://localhost:8000/api/user-courses'; // URL вашего API
-
-export const fetchCoursesByUserId = async (userId) => {
-    try {
-        const response = await axios.get(API_URL);
-        const allCourses = response.data; // Предполагаем, что все курсы приходят в формате массива
-
-        // Фильтруем курсы по user_id
-        const userCourses = allCourses.filter(course => course.user_id === userId);
-        return userCourses; // Возвращаем только курсы, соответствующие user_id
-    } catch (error) {
-        console.error('Ошибка при получении курсов:', error);
-        throw new Error('Не удалось загрузить курсы. Попробуйте позже.');
-    }
-};
 
 
 
 
 
-// Удаление курса пользователя
-export const deleteUserCourse = async (userId, courseId) => {
-    await axios.delete(`http://localhost:8000/api/user-courses?user_id=${userId}&course_id=${courseId}`);
-};
+

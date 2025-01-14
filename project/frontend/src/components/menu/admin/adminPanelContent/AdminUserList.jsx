@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchUsersData, updateUser, registerUser, deleteUser } from "../../../../functions/api/userApi.js";
 import "../../../../styles/AdminUsersList.css";
 import CustomConfirmationDialog from "../../../dialog/CustomConfirmationDialog.jsx";
+import { fetchUserRoleById } from "../../../../functions/api/userRoleApi.js";
 
 const roleMap = {
     1: 'Студент',
@@ -24,15 +25,17 @@ const AdminUsersList = () => {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [selectedRole, setSelectedRole] = useState('all');
     const [selectedUserId, setSelectedUserId] = useState(null);
-    //const [showDetailPanel, setShowDetailPanel] = useState(false);
     const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+    const [showSidePanel, setShowSidePanel] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [setUserRole] = useState('');
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const data = await fetchUsersData();
                 setUsers(data);
-                setFilteredUsers(data); // Устанавливаем изначально отфильтрованных пользователей
+                setFilteredUsers(data);
             } catch (error) {
                 setError('Ошибка загрузки пользователей');
                 console.error(error);
@@ -53,6 +56,21 @@ const AdminUsersList = () => {
         }
     }, [selectedRole, users]);
 
+    useEffect(() => {
+        const fetchRole = async () => {
+            if (selectedUser) {
+                try {
+                    const role = await fetchUserRoleById(selectedUser.id);
+                    setUserRole(role); // Предполагается, что роль возвращается как строка
+                } catch (error) {
+                    console.error('Ошибка при получении роли пользователя:', error);
+                }
+            }
+        };
+
+        fetchRole();
+    }, [selectedUser]);
+
     const handleEditClick = (user) => {
         setEditingUser(user.id);
         setUpdatedLogin(user.login);
@@ -60,21 +78,19 @@ const AdminUsersList = () => {
         setUpdatedRole(user.role_id);
     };
 
+    const handleUserClick = (user) => {
+        console.log("User Info:", user);
+        setSelectedUser(user);
+        setShowSidePanel(true);
+    };
+
     const handleUpdateUser = async (userId) => {
         try {
             const updatedData = {
                 email: updatedEmail.trim(),
-                role_id: updatedRole
+                role_id: updatedRole,
+                login: updatedLogin.trim(),
             };
-
-            if (users.find(user => user.id === userId).role_id === 3) {
-                updatedData.login = users.find(user => user.id === userId).login;
-            } else {
-                if (!updatedData.email) {
-                    throw new Error('Email должен быть заполнен корректно.');
-                }
-                updatedData.login = updatedLogin.trim();
-            }
 
             await updateUser(userId, updatedData);
             setUsers(users.map(user => (user.id === userId ? { ...user, ...updatedData } : user)));
@@ -125,21 +141,30 @@ const AdminUsersList = () => {
         setShowConfirmationDialog(true);
     };
 
-    // const handleDeleteCourse = async (selectedUserId, courseId, setCourses, setError) => {
-    //     try {
-    //         await deleteUserCourse(selectedUserId, courseId);
-    //         setCourses(prevCourses => prevCourses.filter(course => course.course_id !== courseId));
-    //     } catch (error) {
-    //         console.error(error);
-    //         setError('Ошибка при удалении курса');
-    //     }
-    // };
+    const toggleSidePanel = () => {
+        setShowSidePanel(!showSidePanel);
+    };
 
     if (loading) return <p className="loading-message">Загрузка пользователей...</p>;
     if (error) return <p className="error-message">{error}</p>;
 
     return (
         <div className="admin-users-list">
+            {showSidePanel && (
+                <div className={`side-panel ${showSidePanel ? '' : 'hidden'}`}>
+                    <h3>Информация о пользователе</h3>
+                    {selectedUser && (
+                        <>
+                            <p><strong>ID:</strong> {selectedUser.id}</p>
+                            <p><strong>Роль: </strong> {roleMap[parseInt(selectedUser.role_id)]}</p>
+                            <p><strong>Логин:</strong> {selectedUser.login}</p>
+                            <p><strong>Email:</strong> {selectedUser.email}</p>
+                        </>
+                    )}
+                    <button onClick={toggleSidePanel} className="close-button">Закрыть</button>
+                </div>
+            )}
+
             <div className="role-filter">
                 <button onClick={() => setSelectedRole('all')} className={selectedRole === 'all' ? 'active' : ''}>Все</button>
                 <button onClick={() => setSelectedRole('студент')} className={selectedRole === 'студент' ? 'active' : ''}>Студенты</button>
@@ -186,7 +211,14 @@ const AdminUsersList = () => {
                     <tbody>
                     {filteredUsers.map((user) => (
                         <tr key={user.id}>
-                            <td>{user.login}</td>
+                            <td>
+                                    <span
+                                        className="clickable-login"
+                                        onClick={() => handleUserClick(user)}
+                                    >
+                                        {user.login}
+                                    </span>
+                            </td>
                             <td>{user.email}</td>
                             <td>{roleMap[user.role_id]}</td>
                             <td>
@@ -195,10 +227,9 @@ const AdminUsersList = () => {
                                         <input
                                             className="edit-input"
                                             type="text"
-                                            value={user.role_id === 3 ? user.login : updatedLogin}
-                                            onChange={(e) => user.role_id !== 3 && setUpdatedLogin(e.target.value)}
+                                            value={updatedLogin}
+                                            onChange={(e) => setUpdatedLogin(e.target.value)}
                                             placeholder="Логин"
-                                            disabled={user.role_id === 3}
                                         />
                                         <input
                                             className="edit-input"
