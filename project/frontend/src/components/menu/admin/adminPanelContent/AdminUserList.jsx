@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUsersData, updateUser, registerUser, deleteUser } from "../../../../functions/api/userApi.js";
+import { fetchCoursesByUserCourses} from "../../../../functions/coursesByUserCourses/coursesByUserCourses.js";
 import "../../../../styles/AdminUsersList.css";
 import CustomConfirmationDialog from "../../../dialog/CustomConfirmationDialog.jsx";
-import { fetchUserRoleById } from "../../../../functions/api/userRoleApi.js";
 
 const roleMap = {
     1: 'Студент',
@@ -28,7 +28,7 @@ const AdminUsersList = () => {
     const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
     const [showSidePanel, setShowSidePanel] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [setUserRole] = useState('');
+    const [userCourses, setUserCourses] = useState([]);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -56,32 +56,19 @@ const AdminUsersList = () => {
         }
     }, [selectedRole, users]);
 
-    useEffect(() => {
-        const fetchRole = async () => {
-            if (selectedUser) {
-                try {
-                    const role = await fetchUserRoleById(selectedUser.id);
-                    setUserRole(role); // Предполагается, что роль возвращается как строка
-                } catch (error) {
-                    console.error('Ошибка при получении роли пользователя:', error);
-                }
-            }
-        };
+    const handleUserClick = async (user) => {
+        setSelectedUser(user);
+        setShowSidePanel(true);
 
-        fetchRole();
-    }, [selectedUser]);
+        const courses = await fetchCoursesByUserCourses(user.id);
+        setUserCourses(courses);
+    };
 
     const handleEditClick = (user) => {
         setEditingUser(user.id);
         setUpdatedLogin(user.login);
         setUpdatedEmail(user.email);
         setUpdatedRole(user.role_id);
-    };
-
-    const handleUserClick = (user) => {
-        console.log("User Info:", user);
-        setSelectedUser(user);
-        setShowSidePanel(true);
     };
 
     const handleUpdateUser = async (userId) => {
@@ -145,6 +132,11 @@ const AdminUsersList = () => {
         setShowSidePanel(!showSidePanel);
     };
 
+    const handleRemoveCourse = async (courseId) => {
+        // Здесь добавьте логику для удаления курса для пользователя
+        console.log(`Удаление курса с ID: ${courseId}`);
+    };
+
     if (loading) return <p className="loading-message">Загрузка пользователей...</p>;
     if (error) return <p className="error-message">{error}</p>;
 
@@ -159,7 +151,19 @@ const AdminUsersList = () => {
                             <p><strong>Роль: </strong> {roleMap[parseInt(selectedUser.role_id)]}</p>
                             <p><strong>Логин:</strong> {selectedUser.login}</p>
                             <p><strong>Email:</strong> {selectedUser.email}</p>
-                        </>
+                            <h4>Курсы пользователя:</h4>
+                            {userCourses.length > 0 ? (
+                                <ul className="user-courses-list">
+                                    {userCourses.map(course => (
+                                        <li key={course.id}>
+                                            {course.name} - ID: {course.id}
+                                            <button className="remove-course-button" onClick={() => handleRemoveCourse(course.id)}>Удалить</button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>Курсы не найдены.</p>
+                            )}</>
                     )}
                     <button onClick={toggleSidePanel} className="close-button">Закрыть</button>
                 </div>
@@ -205,7 +209,7 @@ const AdminUsersList = () => {
                         <th>Логин</th>
                         <th>Email</th>
                         <th>Роль</th>
-                        <th>Действия</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
