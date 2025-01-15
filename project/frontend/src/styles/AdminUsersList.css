@@ -211,13 +211,26 @@
 }
 
 .close-button {
+    color: white; /* Белый текст */
+    border: none; /* Убирает рамку */
+    padding: 5px 10px; /* Внутренние отступы */
+    border-radius: 4px; /* Скругленные углы */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background-color 0.3s; /* Плавный переход для фона */
     margin-top: 20px;
     background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 }
+.close-button:hover {
+    color: white; /* Белый текст */
+    border: none; /* Убирает рамку */
+    padding: 5px 10px; /* Внутренние отступы */
+    border-radius: 4px; /* Скругленные углы */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background-color 0.3s; /* Плавный переход для фона */
+    margin-top: 20px;
+    background-color: #7e202a;
+}
+
 
 .role-filter {
     margin-bottom: 15px;
@@ -252,7 +265,37 @@
     color: #0056b3; /* Darker blue on hover */
 }
 
+.user-courses-list {
+    list-style-type: none; /* Убирает маркеры списка */
+    padding: 0; /* Убирает отступы */
+    margin: 10px 0; /* Добавляет отступы сверху и снизу */
+}
 
+.user-courses-list li {
+    background-color: #eaf1f8; /* Светлый фон для элементов списка */
+    border: 1px solid #d1e0e8; /* Светлая граница */
+    padding: 10px; /* Внутренний отступ */
+    border-radius: 4px; /* Скругленные углы */
+    margin-bottom: 5px; /* Отступ между элементами списка */
+    transition: background-color 0.3s; /* Плавный переход для фона */
+}
+
+/*.user-courses-list li:hover {*/
+/*    background-color: #d0e1f9; !* Изменение фона при наведении *!*/
+/*}*/
+.remove-course-button {
+    background-color: #ff4d4d; /* Красный фон */
+    color: white; /* Белый текст */
+    border: none; /* Убирает рамку */
+    padding: 5px 10px; /* Внутренние отступы */
+    border-radius: 4px; /* Скругленные углы */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background-color 0.3s; /* Плавный переход для фона */
+}
+
+.remove-course-button:hover {
+    background-color: #5e0e0e; /* Темнее при наведении */
+}
 /* Адаптивные стили */
 @media (max-width: 600px) {
     .users-table th,

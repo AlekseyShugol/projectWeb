@@ -49,3 +49,23 @@ export const getUserCourses = async (userId) => {
     const data = await response.json();
     return data; // Возвращаем ответ от сервера
 };
+
+export const deleteUserCourse = async (courseId, userId) => {
+    const token = localStorage.getItem('token');
+
+    const response = await fetch(`http://localhost:8000/api/user-courses/${courseId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: userId }), // Передаем user_id, если необходимо
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Ошибка при удалении курса пользователя');
+    }
+
+    return response.json(); // Возвращаем ответ от сервера
+};
