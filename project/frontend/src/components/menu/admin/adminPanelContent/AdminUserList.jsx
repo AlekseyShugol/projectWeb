@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { fetchUsersData, updateUser, registerUser, deleteUser } from "../../../../functions/api/userApi.js";
-import { fetchCoursesByUserCourses} from "../../../../functions/coursesByUserCourses/coursesByUserCourses.js";
+import { fetchCoursesByUserCourses } from "../../../../functions/coursesByUserCourses/coursesByUserCourses.js";
 import "../../../../styles/AdminUsersList.css";
 import CustomConfirmationDialog from "../../../dialog/CustomConfirmationDialog.jsx";
+import { deleteUserCourseByCourse } from "../../../../functions/api/userCoursesApi.js";
 
 const roleMap = {
     1: 'Студент',
@@ -11,6 +12,7 @@ const roleMap = {
 };
 
 const AdminUsersList = () => {
+    // Состояния
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -29,7 +31,13 @@ const AdminUsersList = () => {
     const [showSidePanel, setShowSidePanel] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [userCourses, setUserCourses] = useState([]);
+    const [courseToDelete, setCourseToDelete] = useState(null); // Новое состояние для курса
 
+    // Пагинация
+    const [currentPage, setCurrentPage] = useState(1);
+    const [coursesPerPage] = useState(5); // Количество курсов на странице
+
+    // Эффекты
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -56,12 +64,14 @@ const AdminUsersList = () => {
         }
     }, [selectedRole, users]);
 
+    // Обработчики
     const handleUserClick = async (user) => {
         setSelectedUser(user);
         setShowSidePanel(true);
 
         const courses = await fetchCoursesByUserCourses(user.id);
         setUserCourses(courses);
+        setCurrentPage(1); // Сброс страницы при смене пользователя
     };
 
     const handleEditClick = (user) => {
@@ -132,10 +142,35 @@ const AdminUsersList = () => {
         setShowSidePanel(!showSidePanel);
     };
 
-    const handleRemoveCourse = async (courseId) => {
-        // Здесь добавьте логику для удаления курса для пользователя
-        console.log(`Удаление курса с ID: ${courseId}`);
+    const handleRemoveCourse = (courseId) => {
+        setCourseToDelete(courseId); // Устанавливаем курс для удаления
+        setShowConfirmationDialog(true); // Показываем диалог подтверждения
     };
+
+    const confirmDeleteCourse = async () => {
+        if (courseToDelete && selectedUser) {
+            const userId = selectedUser.id; // Получаем ID выбранного пользователя
+            try {
+                await deleteUserCourseByCourse(courseToDelete, userId); // Вызываем функцию удаления юзеркурса
+                setUserCourses(userCourses.filter(course => course.id !== courseToDelete)); // Обновляем список курсов
+                console.log(`Курс с ID ${courseToDelete} успешно удалён для пользователя с ID ${userId}`);
+            } catch (error) {
+                console.error('Ошибка при удалении курса:', error);
+            } finally {
+                setShowConfirmationDialog(false);
+                setCourseToDelete(null); // Сбрасываем курс
+            }
+        }
+    };
+
+    // Логика пагинации
+    const indexOfLastCourse = currentPage * coursesPerPage;
+    const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
+    const currentCourses = userCourses.slice(indexOfFirstCourse, indexOfLastCourse);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const totalPages = Math.ceil(userCourses.length / coursesPerPage);
 
     if (loading) return <p className="loading-message">Загрузка пользователей...</p>;
     if (error) return <p className="error-message">{error}</p>;
@@ -152,9 +187,9 @@ const AdminUsersList = () => {
                             <p><strong>Логин:</strong> {selectedUser.login}</p>
                             <p><strong>Email:</strong> {selectedUser.email}</p>
                             <h4>Курсы пользователя:</h4>
-                            {userCourses.length > 0 ? (
+                            {currentCourses.length > 0 ? (
                                 <ul className="user-courses-list">
-                                    {userCourses.map(course => (
+                                    {currentCourses.map(course => (
                                         <li key={course.id}>
                                             {course.name} - ID: {course.id}
                                             <button className="remove-course-button" onClick={() => handleRemoveCourse(course.id)}>Удалить</button>
@@ -163,7 +198,19 @@ const AdminUsersList = () => {
                                 </ul>
                             ) : (
                                 <p>Курсы не найдены.</p>
-                            )}</>
+                            )}
+                            <div className="pagination">
+                                {Array.from({ length: totalPages }, (_, index) => (
+                                    <button
+                                        key={index + 1}
+                                        onClick={() => paginate(index + 1)}
+                                        className={currentPage === index + 1 ? 'active' : ''}
+                                    >
+                                        {index + 1}
+                                    </button>
+                                ))}
+                            </div>
+                        </>
                     )}
                     <button onClick={toggleSidePanel} className="close-button">Закрыть</button>
                 </div>
@@ -265,9 +312,12 @@ const AdminUsersList = () => {
 
             {showConfirmationDialog && (
                 <CustomConfirmationDialog
-                    message="Вы уверены, что хотите удалить этого пользователя?"
-                    onConfirm={confirmDeleteUser}
-                    onCancel={() => setShowConfirmationDialog(false)}
+                    message={courseToDelete ? "Вы уверены, что хотите удалить этот курс?" : "Вы уверены, что хотите удалить этого пользователя?"}
+                    onConfirm={courseToDelete ? confirmDeleteCourse : confirmDeleteUser}
+                    onCancel={() => {
+                        setShowConfirmationDialog(false);
+                        setCourseToDelete(null); // Сбрасываем курс
+                    }}
                 />
             )}
         </div>
