@@ -28,7 +28,7 @@ exports.createLesson = async (req, res) => {
     const newLesson = await lessonService.createLesson(req.body);
     res.status(201).json(newLesson);
   } catch (error) {
-    res.status(400).json({ message: 'Error creating lesson' });
+    res.status(400).json({ message: 'Error creating lesson ' + error });
   }
 };
 

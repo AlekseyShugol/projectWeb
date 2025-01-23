@@ -69,3 +69,35 @@ export const deleteUserCourse = async (courseId, userId) => {
 
     return response.json(); // Возвращаем ответ от сервера
 };
+export async function deleteUserCourseByCourse(courseId, userId) {
+    try {
+        // Запрос на получение всех юзеркурсов
+        const userCoursesResponse = await fetch('http://localhost:8000/api/user-courses');
+        const userCourses = await userCoursesResponse.json();
+
+        // Фильтруем юзеркурсы по user_id и cource_id
+        const userCoursesToDelete = userCourses.filter(course =>
+            course.user_id === userId.toString() && course.cource_id === courseId.toString()
+        );
+
+        // Удаляем каждый юзеркурс
+        for (const userCourse of userCoursesToDelete) {
+            const token = localStorage.getItem('token');
+            const deleteResponse = await fetch(`http://localhost:8000/api/user-courses/${userCourse.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Добавляем токен в заголовок
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!deleteResponse.ok) {
+                console.error(`Ошибка при удалении юзеркурса с ID ${userCourse.id}:`, deleteResponse.statusText);
+            } else {
+                console.log(`Юзеркурс с ID ${userCourse.id} успешно удалён.`);
+            }
+        }
+    } catch (error) {
+        console.error('Ошибка при удалении юзеркурсов:', error);
+    }
+}
