@@ -32,39 +32,17 @@
 }
 
 .course-info-panel {
-    width: 300px; /* Фиксированная ширина для панели информации */
+    flex: 0 0 300px; /* Фиксированная ширина для панели информации */
     border: 1px solid #ddd; /* Рамка для панели информации */
     padding: 15px; /* Отступы внутри панели */
     background-color: #f9f9f9; /* Цвет фона панели информации */
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Тень для панели */
-    flex-shrink: 0; /* Запрет на сжатие панели */
-}
-
-.close-enrollInfo-button1 {
-    background-color: #ff4d4d; /* Красный цвет фона */
-    color: white; /* Белый цвет текста */
-    border: none; /* Без рамки */
-    padding: 10px 15px; /* Отступы */
-    border-radius: 5px; /* Закруглённые углы */
-    cursor: pointer; /* Указатель при наведении */
-    transition: background-color 0.3s; /* Плавный переход цвета */
-}
-
-.close-enrollInfo-button1:hover {
-    background-color: #ff1a1a; /* Темнее при наведении */
-}
-.course-info-panel {
-    flex: 0 0 300px; /* Фиксированная ширина для панели информации */
-    border: 1px solid #ddd;
-    padding: 15px;
-    background-color: #f9f9f9;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     margin-left: 20px; /* Отступ слева для отделения от таблицы */
 }
 
 .course-info-panel h2 {
     margin-bottom: 10px; /* Отступ снизу заголовка */
-    font-size: 1.5rem;
+    font-size: 1.5rem; /* Размер шрифта */
     color: #333; /* Цвет заголовка */
 }
 
@@ -74,28 +52,91 @@
     color: #555; /* Цвет текста */
 }
 
-/*.course-info-panel button {*/
-/*    margin-top: 10px; !* Отступ сверху кнопки *!*/
-/*    padding: 10px 15px; !* Внутренние отступы *!*/
-/*    border: none; !* Убираем рамку *!*/
-/*    border-radius: 5px; !* Скругленные углы *!*/
-/*    cursor: pointer; !* Указатель при наведении *!*/
-/*    transition: background-color 0.3s; !* Плавный переход цвета *!*/
-/*}*/
-
-.add-lesson-button {
-    margin-left: 10px;
-    background-color: #007bff; /* Цвет фона кнопки */
-    color: white; /* Цвет текста кнопки */
-    border: none; /* Без рамки */
-    padding: 10px 15px; /* Отступы */
-    border-radius: 5px; /* Закруглённые углы */
+.button {
+    margin-top: 10px; /* Отступ сверху для кнопок */
+    padding: 10px 15px; /* Внутренние отступы */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Скругленные углы */
     cursor: pointer; /* Указатель при наведении */
     transition: background-color 0.3s; /* Плавный переход цвета */
+    font-size: 1rem; /* Размер шрифта */
 }
+
+.close-enrollInfo-button {
+    background-color: #dc3545; /* Красный цвет фона */
+    color: white; /* Белый цвет текста */
+}
+
+.close-enrollInfo-button:hover {
+    background-color: #c82333; /* Темнее при наведении */
+}
+
+.add-lesson-button {
+    margin-left: 10px; /* Отступ слева */
+    background-color: #28a745; /* Зеленый цвет фона */
+    color: white; /* Белый цвет текста */
+}
+
 .add-lesson-button:hover {
-    background-color: #014591; /* Цвет фона кнопки */
-    color: white; /* Цвет текста кнопки */
+    background-color: #218838; /* Темнее при наведении */
+}
+
+.lesson-form label {
+    display: block; /* Каждый элемент формы на новой строке */
+    margin: 5px 0; /* Отступы между элементами */
+    font-size: 0.9rem; /* Уменьшенный размер шрифта */
+}
+
+.lesson-form input[type="time"],
+.lesson-form input[type="number"],
+.lesson-form input[type="text"] {
+    width: calc(100% - 10px); /* Полная ширина поля ввода с учетом отступов */
+    padding: 5px; /* Уменьшенные внутренние отступы */
+    margin-top: 5px; /* Отступ сверху */
+    margin-right: 5px; /* Отступ справа */
+    border: 1px solid #ccc; /* Рамка для полей ввода */
+    border-radius: 4px; /* Скругленные углы */
+    font-size: 0.9rem; /* Уменьшенный размер шрифта */
+}
+
+.lesson-form input[type="time"]:focus,
+.lesson-form input[type="number"]:focus,
+.lesson-form input[type="text"]:focus {
+    border-color: #28a745; /* Цвет рамки при фокусе */
+    outline: none; /* Убираем стандартное обрамление */
+}
+
+.save-lesson-button {
+    margin-top: 10px; /* Отступ сверху для кнопки сохранения */
+    padding: 8px 12px; /* Внутренние отступы для кнопки */
+    border: none; /* Убираем рамку */
+    border-radius: 4px; /* Скругленные углы */
+    background-color: #007bff; /* Синий цвет фона */
+    color: white; /* Белый цвет текста */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета */
+    font-size: 0.9rem; /* Уменьшенный размер шрифта */
+}
+
+.save-lesson-button:hover {
+    background-color: #0056b3; /* Темнее при наведении */
+}
+
+.cancel-lesson-button {
+    margin-left: 10px;
+    margin-top: 10px; /* Отступ сверху для кнопки отмены */
+    padding: 8px 12px; /* Внутренние отступы для кнопки */
+    border: none; /* Убираем рамку */
+    border-radius: 4px; /* Скругленные углы */
+    background-color: #ff0707; /* Желтый цвет фона */
+    color: white; /* Белый цвет текста */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета */
+    font-size: 0.9rem; /* Уменьшенный размер шрифта */
+}
+
+.cancel-lesson-button:hover {
+    background-color: #5e0e0e; /* Темнее при наведении */
 }
 
 .course-info-panel h3 {
@@ -117,74 +158,111 @@
     background-color: #f1f1f1; /* Цвет фона элемента списка */
 }
 
-.course-info-panel details {
-    cursor: pointer; /* Указатель при наведении */
-}
-
-.course-info-panel details summary {
-    font-weight: bold; /* Жирный шрифт для заголовка урока */
-    margin-bottom: 5px; /* Отступ снизу */
-}
-.close-enrollInfo-button {
-    margin-top: 10px; /* Отступ сверху для кнопки "Закрыть" */
-    padding: 10px 15px; /* Внутренние отступы */
+.delete-lesson-button {
+    margin-top: 10px; /* Отступ сверху для кнопки удаления */
+    padding: 5px 10px; /* Внутренние отступы для кнопки */
     border: none; /* Убираем рамку */
-    border-radius: 5px; /* Скругленные углы */
+    border-radius: 4px; /* Скругленные углы */
     background-color: #dc3545; /* Красный цвет фона */
     color: white; /* Белый цвет текста */
     cursor: pointer; /* Указатель при наведении */
     transition: background-color 0.3s; /* Плавный переход цвета */
-    font-size: 1rem; /* Размер шрифта */
 }
 
-.close-enrollInfo-button:hover {
+.delete-lesson-button:hover {
     background-color: #c82333; /* Темнее при наведении */
 }
 
-.add-lesson-button {
-    margin-top: 10px; /* Отступ сверху для кнопки "Добавить" */
-    padding: 10px 15px; /* Внутренние отступы */
-    border: none; /* Убираем рамку */
-    border-radius: 5px; /* Скругленные углы */
-    background-color: #28a745; /* Зеленый цвет фона */
-    color: white; /* Белый цвет текста */
-    cursor: pointer; /* Указатель при наведении */
-    transition: background-color 0.3s; /* Плавный переход цвета */
-    font-size: 1rem; /* Размер шрифта */
+.subscriber-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Отступ между подписчиками */
 }
 
-.add-lesson-button:hover {
-    background-color: #218838; /* Темнее при наведении */
-}
-.add-lesson-button {
-    margin-top: 10px; /* Отступ сверху для кнопки "Добавить" */
-    padding: 10px 15px; /* Внутренние отступы */
-    border: none; /* Убираем рамку */
-    border-radius: 5px; /* Скругленные углы */
-    background-color: #28a745; /* Зеленый цвет фона */
-    color: white; /* Белый цвет текста */
-    cursor: pointer; /* Указатель при наведении */
-    transition: background-color 0.3s; /* Плавный переход цвета */
-    font-size: 1rem; /* Размер шрифта */
+.rate-button, .edit-button-panel {
+    margin-left: 10px; /* Отступ между кнопками */
+    padding: 5px 10px; /* Уменьшение размера кнопок */
+    font-size: 14px; /* Уменьшение размера шрифта */
+    font-family: Arial, sans-serif; /* Задание шрифта */
 }
 
-.add-lesson-button:hover {
-    background-color: #218838; /* Темнее при наведении */
+.rate-button {
+    border: 1px solid #007bff; /* Цвет рамки */
+    background-color: #fff; /* Цвет фона */
+    color: #007bff; /* Цвет текста */
 }
 
-/* Дополнительные стили для кнопки "Добавить урок" (если нужно) */
-.add-lesson-modal-button {
-    margin-top: 10px; /* Отступ сверху для кнопки "Добавить урок" */
-    padding: 10px 15px; /* Внутренние отступы */
-    border: none; /* Убираем рамку */
-    border-radius: 5px; /* Скругленные углы */
-    background-color: #007bff; /* Синий цвет фона */
-    color: white; /* Белый цвет текста */
-    cursor: pointer; /* Указатель при наведении */
-    transition: background-color 0.3s; /* Плавный переход цвета */
-    font-size: 1rem; /* Размер шрифта */
+.rate-button:hover {
+    border: 1px solid #ffffff; /* Цвет рамки */
+    background-color: #007bff; /* Цвет фона */
+    color: #ffffff; /* Цвет текста */
 }
 
-.add-lesson-modal-button:hover {
-    background-color: #0069d9; /* Темнее при наведении */
+.edit-button-panel {
+    background-color: #007bff; /* Цвет фона */
+    color: #fff; /* Цвет текста */
+    border: 1px solid #007bff; /* Цвет рамки */
+}
+
+.edit-button-panel:hover {
+    background-color: #004fa8; /* Цвет фона */
+    color: #fff; /* Цвет текста */
+    border: 1px solid #007bff; /* Цвет рамки */
+}
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4caf50; /* Default success color */
+    color: white; /* White text */
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: opacity 0.5s ease-in-out; /* Smooth appearance */
+    opacity: 0; /* Start hidden */
+    animation: fadeIn 0.5s forwards; /* Fade-in animation */
+}
+
+.notification button {
+    background-color: transparent; /* Transparent button */
+    border: none; /* No border */
+    color: white; /* White text */
+    cursor: pointer; /* Pointer on hover */
+    margin-left: 10px; /* Space between text and button */
+    font-weight: bold; /* Bold text */
+}
+
+.rating-input, .lesson-number-input {
+    margin-left: 10px;
+    margin-bottom: 5px;
+    width: 80px; /* Set a consistent width */
+}
+.cancel-button {
+    margin-left: 10px; /* Space between buttons */
+    padding: 5px 10px; /* Padding for the button */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #ff0707; /* Yellow background */
+    color: white; /* White text */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.cancel-button:hover {
+    background-color: #5e0e0e; /* Darker yellow on hover */
+}
+.save-button-pan {
+    margin-left: 10px; /* Space between buttons */
+    padding: 5px 10px; /* Padding for the button */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #004fa8; /* Yellow background */
+    color: white; /* White text */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.save-button-pan:hover {
+    background-color: #023265; /* Darker yellow on hover */
 }
