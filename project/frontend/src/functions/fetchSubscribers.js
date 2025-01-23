@@ -1,13 +1,26 @@
 // functions/fetchSubscribers.js
 
 export const fetchSubscribers = async (courseId) => {
+    const token = localStorage.getItem('token');
     try {
-        const response = await fetch('http://localhost:8000/api/user-courses');
+        const response = await fetch('http://localhost:8000/api/user-courses' , {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
         const subscriptions = await response.json();
         const courseSubscriptions = subscriptions.filter(sub => sub.cource_id === courseId);
 
         const userPromises = courseSubscriptions.map(async (sub) => {
-            const userResponse = await fetch(`http://localhost:8000/api/users/${sub.user_id}`);
+            const userResponse = await fetch(`http://localhost:8000/api/users/${sub.user_id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
             return await userResponse.json();
         });
 

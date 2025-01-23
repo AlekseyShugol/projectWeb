@@ -10,6 +10,10 @@
     color: white; /* Цвет текста для активной вкладки */
     border-radius: 5px; /* Скругление углов */
 }
+.menu-button:not(.active):hover {
+    background-color: #e0e0e0; /* Цвет фона при наведении */
+    transform: scale(1.05); /* Увеличение размера кнопки при наведении */
+}
 
 .main-menu {
     display: flex;
