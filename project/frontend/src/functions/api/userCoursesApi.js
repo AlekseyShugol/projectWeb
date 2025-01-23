@@ -46,8 +46,7 @@ export const getUserCourses = async (userId) => {
         throw new Error(errorData.message || 'Ошибка при получении курсов пользователя');
     }
 
-    const data = await response.json();
-    return data; // Возвращаем ответ от сервера
+    return await response.json(); // Возвращаем ответ от сервера
 };
 
 export const deleteUserCourse = async (courseId, userId) => {

@@ -9,6 +9,7 @@ import Profile from "./menu/Profile/Profile.jsx";
 import AdminCoursesList from "./menu/admin/adminPanelContent/AdminCoursesList.jsx";
 import AdminPanel from "./menu/admin/AdminPanel.jsx";
 import AdminUsersList from "./menu/admin/adminPanelContent/AdminUserList.jsx";
+import AdminEnrollPage from "./menu/admin/adminPanelContent/AdminEnrollPage.jsx";
 
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
                     <Route path="admin/*" element={<AdminPanel />}>
                         <Route path="adminCoursesView" element={<AdminCoursesList />} />
                         <Route path="adminUsersView" element={<AdminUsersList />} />
+                        <Route path="inrollCourse" element={<AdminEnrollPage />} />
                         {/* Добавьте другие маршруты для администраторов здесь */}
                     </Route>
                 </Route>
