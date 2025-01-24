@@ -10,6 +10,8 @@ import AdminCoursesList from "./menu/admin/adminPanelContent/AdminCoursesList.js
 import AdminPanel from "./menu/admin/AdminPanel.jsx";
 import AdminUsersList from "./menu/admin/adminPanelContent/AdminUserList.jsx";
 import AdminEnrollPage from "./menu/admin/adminPanelContent/AdminEnrollPage.jsx";
+import UserCourses from "./menu/userCourses/UserCoursesList.jsx";
+import CourseDetail from "./menu/userCourses/CourseDetail.jsx";
 
 const App = () => {
     return (
@@ -21,6 +23,8 @@ const App = () => {
                 <Route path="/*" element={<MainMenu />}>
                     <Route path="courses" element={<Courses />} />
                     <Route path="profile" element={<Profile />} />
+                    <Route path="my-courses" element={<UserCourses />} />
+                    <Route path="courses/:courseId" element={<CourseDetail />} />
                     <Route path="admin/*" element={<AdminPanel />}>
                         <Route path="adminCoursesView" element={<AdminCoursesList />} />
                         <Route path="adminUsersView" element={<AdminUsersList />} />

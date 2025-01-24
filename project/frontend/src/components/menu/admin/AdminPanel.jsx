@@ -12,7 +12,7 @@ const AdminPanel = () => {
     if (token) {
         try {
             const decodedToken = getUserFromToken(token);
-            console.log('Декодированный токен:', decodedToken);
+            //console.log('Декодированный токен:', decodedToken);
             userRole = decodedToken.role; // Получаем роль пользователя
         } catch (error) {
             console.error('Ошибка декодирования токена:', error);

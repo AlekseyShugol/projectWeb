@@ -32,7 +32,7 @@
     border-radius: 4px;
 }
 
-.save-button, .cancel-button, .edit-button, .delete-button {
+.save-button, .admin-courses-cancel-button, .edit-button, .delete-button {
     padding: 10px 15px;
     margin-right: 5px;
     border: none;
@@ -46,12 +46,12 @@
     color: white;
 }
 
-.cancel-button {
+.admin-courses-cancel-button {
     background-color: #dc3545;
     color: white;
 }
 
-.cancel-button:hover {
+.admin-courses-cancel-button:hover {
     background-color: #a32934;
     color: white;
 }
