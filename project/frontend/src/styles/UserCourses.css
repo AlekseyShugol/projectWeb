@@ -1,0 +1,44 @@
+/* UserCourses.css */
+.user-courses-grid {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.loading-message, .error-message {
+    color: #ff0000;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 плиток в ряду */
+    gap: 15px; /* Пробел между плитками */
+}
+
+.course-tile {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center; /* Центрируем текст */
+    min-height: 200px; /* Минимальная высота плитки */
+    min-width: 200px; /* Минимальная высота плитки */
+    max-width: 200px;
+    max-height: 200px;/* Минимальная высота плитки */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Центрируем текст по вертикали */
+}
+
+.course-tile h5, .course-tile p {
+    margin: 0; /* Убираем отступы */
+    font-size: 1.2em; /* Увеличиваем размер шрифта */
+    line-height: 1.5; /* Увеличиваем межстрочный интервал */
+}
+
+.course-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

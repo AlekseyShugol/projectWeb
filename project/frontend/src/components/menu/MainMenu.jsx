@@ -12,7 +12,7 @@ const MainMenu = () => {
     if (token) {
         try {
             const decodedToken = getUserFromToken(token);
-            console.log('Декодированный токен:', decodedToken);
+            //console.log('Декодированный токен:', decodedToken);
             isAdmin = decodedToken.role === '3' || decodedToken.role === '2';
         } catch (error) {
             console.error('Ошибка декодирования токена:', error);

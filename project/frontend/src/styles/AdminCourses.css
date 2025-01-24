@@ -106,6 +106,11 @@
     color: white;
 }
 
+.admin-cancel-button:hover {
+    background-color: #a32934; /* Красный */
+    color: white;
+}
+
 .table-container {
     max-height: 400px; /* Установите желаемую высоту */
     overflow-y: auto;  /* Включите вертикальную прокрутку */

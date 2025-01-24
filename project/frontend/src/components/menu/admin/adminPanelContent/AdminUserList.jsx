@@ -245,7 +245,7 @@ const AdminUsersList = () => {
                         <option value={3}>Администратор</option>
                     </select>
                     <button onClick={handleAddUser} className="save-button">Сохранить пользователя</button>
-                    <button onClick={() => setIsAddingUser(false)} className="cancel-button">Отмена</button>
+                    <button onClick={() => setIsAddingUser(false)} className="admin-courses-cancel-button">Отмена</button>
                 </div>
             )}
 
@@ -295,7 +295,7 @@ const AdminUsersList = () => {
                                             <option value={3}>Администратор</option>
                                         </select>
                                         <button className="save-button" onClick={() => handleUpdateUser(user.id)}>Сохранить</button>
-                                        <button className="cancel-button" onClick={() => setEditingUser(null)}>Отмена</button>
+                                        <button className="admin-courses-cancel-button" onClick={() => setEditingUser(null)}>Отмена</button>
                                     </div>
                                 ) : (
                                     <>
