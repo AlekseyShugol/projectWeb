@@ -55,3 +55,16 @@ summary {
 summary:hover {
     text-decoration: underline;
 }
+.unsubscribe-button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    background-color: #ff0707;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.unsubscribe-button:hover {
+    background-color: #7e202a;
+}

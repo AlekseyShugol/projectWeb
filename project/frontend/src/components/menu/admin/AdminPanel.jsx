@@ -25,7 +25,7 @@ const AdminPanel = () => {
 
     return (
         <div className="admin-panel">
-            <h1>Панель администратора</h1>
+            <h1>Панель управления</h1>
             <button className="back-button" onClick={handleBack}>Закрыть панель</button>
             <nav>
                 <ul className="tabs">
@@ -35,7 +35,7 @@ const AdminPanel = () => {
                                 to="inrollCourse"
                                 className={`tab-button ${location.pathname.includes('inrollCourse') ? 'active' : ''}`}
                             >
-                                Зачисление преподавателей
+                                Управление занятиями
                             </Link>
                         </li>
                     ) : (

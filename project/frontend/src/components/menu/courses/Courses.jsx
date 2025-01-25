@@ -19,18 +19,20 @@ const Courses = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [notification, setNotification] = useState('');
+    const [userRole, setUserRole] = useState(null);
 
     useEffect(() => {
-        const fetchCourses = async () => {
+        const fetchUserDataAndCourses = async () => {
             try {
-                //const token = localStorage.getItem('token');
-                //const userData = getUserFromToken(token);
+                // Получение информации о пользователе из токена
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const userData = getUserFromToken(token);
+                    setUserRole(userData.role); // Устанавливаем роль пользователя
+                }
 
                 const coursesData = await fetchCoursesData();
-                //const userCoursesData = await fetchUserCourses();
-
                 setCourses(coursesData);
-                //setUserCourses(userCoursesData);
             } catch (error) {
                 setError('Ошибка загрузки курсов');
             } finally {
@@ -38,7 +40,7 @@ const Courses = () => {
             }
         };
 
-        fetchCourses();
+        fetchUserDataAndCourses();
     }, []);
 
     const handleSubscribe = async (course) => {
@@ -89,9 +91,15 @@ const Courses = () => {
                     <button
                         className="subscribe-button"
                         onClick={() => handleSubscribe(course)}
-                        disabled={isSubscribed(course.id)}
+                        disabled={
+                            isSubscribed(course.id) || userRole === '2' || userRole === '3'
+                        }
                     >
-                        {isSubscribed(course.id) ? 'Подписаны' : 'Подписаться'}
+                        {isSubscribed(course.id)
+                            ? 'Подписаны'
+                            : userRole === '2' || userRole === '3'
+                                ? 'Недоступно'
+                                : 'Подписаться'}
                     </button>
                 </div>
             ))}
