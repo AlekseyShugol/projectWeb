@@ -123,7 +123,7 @@ const CourseDetail = () => {
             // Вывод ответа от сервера в кастомное уведомление
             setNotification('Ответы сервера: ' + responses.map(res => res.message).join(', '));
             console.log('Ответы сервера:', responses);
-            navigate('/courses'); // Перенаправление на страницу курсов
+            navigate('/my-courses'); // Перенаправление на страницу курсов
         } catch (error) {
             console.error('Ошибка при отписке:', error);
             setNotification('Ошибка при отписке от курса');

@@ -49,7 +49,6 @@ const UserCoursesList = () => {
 
     return (
         <div className="user-courses-grid">
-            <h4>Курсы пользователя:</h4>
             {userCourses.length > 0 ? (
                 <div className="grid-container">
                     {userCourses.map(course => (
