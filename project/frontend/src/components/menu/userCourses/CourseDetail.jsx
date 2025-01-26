@@ -150,8 +150,8 @@ const CourseDetail = () => {
                     <li key={lesson.id}>
                         <details>
                             <summary>Урок {lesson.id}</summary>
-                            <p>Время: {lesson.start_time}</p>
-                            <h4>Преподаватель: {teachers[lesson.teacher_id]?.login || 'Неизвестен'} ({teachers[lesson.teacher_id]?.email || 'Неизвестен'})</h4>
+                            <p>Время начала: {lesson.start_time}</p>
+                            {/*<h4>Преподаватель: {teachers[lesson.teacher_id]?.login || 'Неизвестен'} ({teachers[lesson.teacher_id]?.email || 'Неизвестен'})</h4>*/}
                             <h4>Оценки:</h4>
                             <ul>
                                 {marks[lesson.id] && marks[lesson.id].map(mark => (
